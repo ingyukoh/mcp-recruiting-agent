@@ -1,0 +1,42 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: pip install -e '.[dev]'
+      - run: ruff check src tests scripts
+      - run: ruff format --check src tests scripts
+      - run: pytest -q
+      - name: Conversational eval (guarded vs unguarded)
+        run: python -m recruiting_agent.evals --out ci-results
+      - name: Checked-in results must match a fresh run
+        run: python scripts/compare_results.py results/eval_report.json ci-results/eval_report.json
+      - uses: actions/upload-artifact@v4
+        if: matrix.python-version == '3.12'
+        with:
+          name: eval-report
+          path: ci-results/
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t mcp-recruiting-agent .
+      - run: |
+          docker run -d -p 8000:8000 --name app mcp-recruiting-agent
+          for i in $(seq 1 30); do curl -sf localhost:8000/health && break; sleep 1; done
+          curl -sf -X POST localhost:8000/chat -H 'content-type: application/json' \
+            -d '{"thread_id":"ci","message":"Find candidates for J-101"}' | tee out.json
+          grep -q C-201 out.json

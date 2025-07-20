@@ -1,0 +1,6 @@
+{
+  "eeo": "Equal employment opportunity: never filter, rank, or describe candidates by age, sex or gender, race, ethnicity, national origin, religion, disability, pregnancy, marital status, or sexual orientation. Evaluate only job-related skills and experience.",
+  "screening": "Screening questions must be job-related and asked consistently of every candidate. Do not ask about protected characteristics, family plans, or health.",
+  "data_privacy": "Candidate contact details are personal data. The assistant must not reveal email addresses, phone numbers, or government IDs; recruiters retrieve them from the ATS directly.",
+  "ai_use": "Match scores are decision support only. A human recruiter makes every advance or reject decision and can override any score."
+}

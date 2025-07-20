@@ -1,6 +1,6 @@
 # Skill evidence map
 
-This file shows where each skill tag is demonstrated in code, and how to check it. Everything is in this repository and runs in CI.
+This file shows where each skill tag is demonstrated in code, and how to check it. Everything is in this repository and can be checked locally.
 
 | Skill tag | Evidence | How to verify |
 |---|---|---|
@@ -9,8 +9,8 @@ This file shows where each skill tag is demonstrated in code, and how to check i
 | LangGraph | [`graph.py`](src/recruiting_agent/graph.py): `StateGraph`, conditional edges, `ToolNode`, `InMemorySaver` thread memory | `test_multi_turn_memory_resolves_references`, `test_threads_are_isolated` |
 | LLM Agents / Agentic Frameworks | Multi-step plans (`get_job` → `search_candidates`), reference resolution across turns, bounded tool rounds | `test_two_hop_tool_plan`; eval category `multi_step_tools` |
 | Guardrails / AI safety | [`guardrails.py`](src/recruiting_agent/guardrails.py): input, tool-output, and final-answer guards | `tests/test_guardrails.py`; the ablation in `results/eval_report.md` |
-| Conversational evaluation | [`evals.py`](src/recruiting_agent/evals.py): multi-turn scenarios, trajectory/content/block/leak metrics, guarded vs unguarded | CI step "Conversational eval" |
+| Conversational evaluation | [`evals.py`](src/recruiting_agent/evals.py): multi-turn scenarios, trajectory/content/block/leak metrics, guarded vs unguarded | `python -m recruiting_agent.evals` |
 | HR & Staffing domain | EEO, screening, and data-privacy policies enforced in the agent; recruiter-facing match scoring | `evals/conversations.json` categories `safety`, `policy`, `privacy` |
-| Deployment | FastAPI, Dockerfile with health check, CI builds the image and calls `/chat` | `.github/workflows/ci.yml` job `docker` |
+| Packaging | FastAPI and a Dockerfile with a health check | [`Dockerfile`](Dockerfile) and the smoke check in [`README.md`](README.md#reproduce) |
 
 **What this does not show:** it has no real users, is not a production deployment, and uses only synthetic data. It shows engineering ability, not production tenure.

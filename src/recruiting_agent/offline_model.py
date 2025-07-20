@@ -1,4 +1,4 @@
-"""Deterministic LangChain chat model used for offline runs, tests, and CI.
+"""Deterministic LangChain chat model used for offline runs and tests.
 
 It implements the same contract as a real tool-calling LLM: given the conversation it
 either emits ``tool_calls`` or a final answer composed only from tool results. That lets

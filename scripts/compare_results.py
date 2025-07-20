@@ -1,4 +1,4 @@
-"""Fail CI if checked-in eval metrics differ from a fresh run (latency excluded)."""
+"""Compare checked-in eval metrics with a fresh run (latency excluded)."""
 
 import json
 import sys

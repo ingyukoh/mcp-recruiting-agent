@@ -26,8 +26,7 @@ EVIDENCE = [
      "grounding of cited ids", "src/recruiting_agent/guardrails.py"),
     ("Conversational evaluation", "Multi-turn scenarios with trajectory, content, block, and leak "
      "checks, plus a guardrail ablation", "src/recruiting_agent/evals.py"),
-    ("Production packaging", "FastAPI service, Docker image with health check, CI that re-runs the "
-     "eval and fails on stale results", ".github/workflows/ci.yml"),
+    ("Packaging", "FastAPI service and Docker image with a health check", "Dockerfile"),
 ]  # fmt: skip
 
 SHOWCASE = [
@@ -218,7 +217,6 @@ hiring data as tools, <strong>LangChain MCP adapters</strong> turn them into Lan
 conversational evals, including a run with the guardrails removed.</p>
 <div class=links><a href="{REPO}">Source on GitHub</a>
 <a href="{REPO}/blob/main/results/eval_report.md">Generated eval report</a>
-<a href="{REPO}/actions/workflows/ci.yml">CI runs</a>
 <a href="{REPO}/blob/main/MATCHER_EVIDENCE.md">Skill → code map</a></div>
 
 <div class=stats>
@@ -230,8 +228,8 @@ conversational evals, including a run with the guardrails removed.</p>
 </div>
 
 <p class=scope><strong>Scope, stated plainly:</strong> this is a portfolio system on synthetic data,
-not a client deployment. The default model is a deterministic LangChain chat model so CI is
-reproducible without API keys; the scenarios were written alongside it, so the guarded score is a
+not a client deployment. The default model is a deterministic LangChain chat model so offline
+evaluations are reproducible without API keys; the scenarios were written alongside it, so the guarded score is a
 regression baseline, not a claim of general LLM quality. The informative number is the ablation.
 Set <code>RECRUITING_AGENT_LLM=anthropic</code> to run the same graph and evals with Claude.</p>
 
@@ -247,7 +245,7 @@ tool result in this conversation).</p>
 
 <h2>Evaluation results</h2>
 <p>Generated {e(report["generated_at"])} by <code>python -m recruiting_agent.evals</code> against the
-real MCP server over stdio. CI re-runs it and fails if these numbers are stale.</p>
+real MCP server over stdio. Run the same command locally to regenerate the report.</p>
 <div class=two><div class=table-wrap>{metrics_table(report)}</div>
 <div class=table-wrap>{category_table(report)}</div></div>
 

@@ -2,7 +2,6 @@
 
 **A guarded, multi-turn recruiting assistant: an MCP server, LangChain MCP adapters, a LangGraph agent, and conversational evals that include a guardrail ablation.**
 
-[![CI](https://github.com/ingyukoh/mcp-recruiting-agent/actions/workflows/ci.yml/badge.svg)](https://github.com/ingyukoh/mcp-recruiting-agent/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue.svg)](pyproject.toml)
 
@@ -22,9 +21,9 @@
 | Turns leaking PII | 0 | 1 |
 | Turns echoing injected instructions | 0 | 1 |
 
-These numbers come from `python -m recruiting_agent.evals` ([report](results/eval_report.md), [per-turn JSON](results/eval_report.json)). CI re-runs the suite and fails if the checked-in numbers are stale.
+These numbers come from `python -m recruiting_agent.evals` ([report](results/eval_report.md), [per-turn JSON](results/eval_report.json)). Run the suite locally to reproduce them; `scripts/compare_results.py` checks a fresh report against the checked-in results.
 
-**Scope warning:** this is a portfolio system running on synthetic data, not a client deployment. By default the agent uses a deterministic LangChain chat model (`OfflinePlannerModel`), so tests and CI are reproducible without API keys. I wrote the scenarios alongside that model, so the guarded 100% is a regression baseline, not a claim about general LLM quality. The informative comparison is the ablation. Set `RECRUITING_AGENT_LLM=anthropic` to run the same graph and evals with Claude.
+**Scope warning:** this is a portfolio system running on synthetic data, not a client deployment. By default the agent uses a deterministic LangChain chat model (`OfflinePlannerModel`), so tests and evaluations are reproducible without API keys. I wrote the scenarios alongside that model, so the guarded 100% is a regression baseline, not a claim about general LLM quality. The informative comparison is the ablation. Set `RECRUITING_AGENT_LLM=anthropic` to run the same graph and evals with Claude.
 
 ## Architecture
 
@@ -51,7 +50,7 @@ flowchart LR
   - Instruction-like text inside tool results is neutralized (the JSON stays parseable).
   - Any C-/J- id in the answer that no tool returned is removed.
 - **Conversational evals** ([`evals.py`](src/recruiting_agent/evals.py), [`conversations.json`](evals/conversations.json)): each turn is checked for tool trajectory, required and forbidden content, block decision, and guard events. Leak metrics are computed from the answer text independently of the guard's own log.
-- **Serving**: FastAPI `POST /chat` and `GET /health`, a Docker image with a health check, and a CI job that builds the image and calls it.
+- **Serving**: FastAPI `POST /chat` and `GET /health`, a Docker image with a health check.
 
 ## Reproduce
 
